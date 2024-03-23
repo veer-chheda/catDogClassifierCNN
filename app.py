@@ -1,11 +1,11 @@
-from __future__ import division, print_function
-# coding=utf-8
 import sys
 import os
 import glob
 import re
 import numpy as np
 from flask import request, jsonify
+import streamlit as st
+from PIL import Image
 
 # Keras
 from tensorflow.keras.applications.imagenet_utils import preprocess_input, decode_predictions
@@ -27,10 +27,11 @@ app = Flask(__name__)
 model = load_model('catdog.h5')
 
 def model_predict(img_path, model):
-    img = image.load_img(img_path, target_size=(256,256))
+    #img = image.load_img(img_path, target_size=(256,256))
 
     # Preprocessing the image
-    x = image.img_to_array(img)
+    img_path = img_path.resize((256,256))
+    x = image.img_to_array(img_path)
     # x = np.true_divide(x, 255)
     ## Scaling
     x = np.expand_dims(x, axis=0)
@@ -84,6 +85,17 @@ def upload():
         return result
     return None
 
+def main():
+    st.title("Cat or Dog Classifier")
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png"])
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.write("")
+        st.write("Classifying...")
+        prediction = model_predict(image, model)
+        st.markdown(f"<p style='font-size:35px;'>Prediction: <strong>{prediction}</strong></p>", unsafe_allow_html=True)
+
 
 if __name__ == '__main__':
-    app.run()
+    main()
