@@ -14,7 +14,7 @@ The model follows a Sequential order with a Flatten layer to reshape output from
 
 <img width="515" alt="image" src="https://github.com/veer-chheda/catDogClassifierCNN/assets/114056626/087a09cd-6888-4ee0-a4bb-d9ff3459e581">
 
-With a batch size of 32, Data Augmentation is performed to improve the accuracy.
+With a batch size of 32, Data Augmentation is performed to improve the accuracy which included rescaling, shearing, zooming and horizontal flipping.
 
 Optimizer used is RMSProp with learning rate as 1e-5. After training for 15 epochs, the model achieves **96.84%** validation accuracy.
 
